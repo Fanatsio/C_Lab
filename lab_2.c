@@ -1,18 +1,15 @@
 #include <stdio.h>
 #include <math.h>
 
-int main()
+int main() 
 {
     double x;
-    printf("Enter x -> ");
+    printf("Enter x { 6.42700 <= x <= 7.31100} -> ");
     scanf("%lf", &x);
-    double y = sqrt(sin(2*x)) + sqrt(sin(3*x));
-    double z = sqrt(sqrt(log(tan(y - 0.392699))));
-    if (isnan(y) == 0 && isnan(z) == 0)
+    if (6.42700 <= x && x <= 7.31100)
     {
-        printf("y(x) = %.3lf\n", y);
-        printf("z(x) = %.3lf", z);
-    } else
-        printf("Error");
-    return 0;
+        double y = sqrt(sin(2*x)) + sqrt(sin(3*x));
+        double z = sqrt(sqrt(log(tan(y - (M_PI / 8)))));
+        printf("y(x) = %lf\nz(x) = %lf\n", y, z);
+    }
 }
