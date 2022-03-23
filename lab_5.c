@@ -2,9 +2,7 @@
 
 int ex(int x, int k)
 {
-  if (k == 0)
-    return 1;
-  return 0 < k ? x * ex(x, k - 1) : x;
+    return k ? x * ex(x, k - 1) : 1;
 }
 
 int wh(int x, int k)
