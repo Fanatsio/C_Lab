@@ -1,14 +1,18 @@
 #include <stdio.h>
 
-int expon(int x, int k)
+int ex(int x, int k)
 {
-    if (k == 0)
-        return 1;
-    int e = expon(x, k / 2);
-    if (k % 2 == 0)
-        return e * e;
-    else
-        return x * e * e;
+  if (k == 0)
+    return 1;
+  return 0 < k ? x * ex(x, k - 1) : x;
+}
+
+int wh(int x, int k)
+{
+  int res = 1;
+  for(int i = 1; i <= k; i++)
+    res = x * res;
+  return res;
 }
 
 int main() {
@@ -17,14 +21,7 @@ int main() {
     scanf("%d", &n);
     printf("Enter d -> ");
     scanf("%d", &d);
-    int res = 1;
-    int i = 1;
-    while(i <= d)
-    {
-        res = n * res;
-        i++;
-    }
-    printf("exponentiation = %d\n", expon(5, 3));
-    printf("res = %d\n", res);
+    printf("exponentiation = %d\n", ex(n, d));
+    printf("res = %d\n", wh(n, d));
     return 0;
 }
