@@ -1,51 +1,41 @@
 #include <stdio.h>
 #include <math.h>
 
+double f(int n)
+{
+    double a, b, d, h, s, s1, s2;
+    int i;
+    a = 0;
+    b = M_PI / 2;
+    h = (b - a) / n;
+    for (i = 0; i != n; i += 1)
+    {
+        s1 += pow(2, a + i * h + h / 2) - 2 + (a + i * h + h / 2) * (a + i * h + h / 2);
+    }
+    s1 *= h;
+    a = M_PI / 2;
+    b = M_PI;
+    for (i = 0; i != n; i += 1)
+    {
+        s2 += sqrt(a + i * h + h / 2) * exp(-((a + i * h + h / 2) * (a + i * h + h / 2)));
+    }
+    s2 *= h;
+    s = s1 + s2;
+    return s;
+}
+
 int main() 
 {
-    double a, b, d, h, s, s1, s2, sn1, sn2, H, k;
+    double s, sn;
     int i, n;
     printf("n >> ");
     scanf("%d", &n);
-    a = 0;
-    b = 1;
-    h = (b - a) / n;
-    H = h / 2;
-    for (i = 0; i != n; i += 1)
+    sn = f(n);
+    printf("s = %lf\n", sn);
+    for (n *= 2; ;)
     {
-        s1 +=  8 * pow((a + i * h + H), 3) * cos(a + i * h + H);
-    }
-    s1 *= h;
-    a = 1;
-    b = 2;
-    for (i = 0; i != n; i += 1)
-    {
-        s2 += log(1 + sqrt(a + i * h + H)) - cos(a + i * h + H);
-    }
-    s2 *= h;
-    sn1 = s1 + s2;
-    printf("s = %lf\n", sn1);
-    printf("------------------------------------\n");
-    for (k = 2 * n; ; 2 * k)
-    {
-        h = (b - a) / k;
-        H = h / 2;
-        for (i = 0; i != k; i += 1)
-        {
-            s1 +=  8 * pow((a + i * h + H), 3) * cos(a + i * h + H);
-        }
-        s1 *= h;
-        a = 1;
-        b = 2;
-        for (i = 0; i != k; i += 1)
-        {
-            s2 += log(1 + sqrt(a + i * h + H)) - cos(a + i * h + H);
-        }
-        s2 *= h;
-        sn2 = s1 + s2;
-        printf("s = %lf\n", sn1);
-        printf("------------------------------------\n");
-        d = fabs(sn2 - sn1) / 3;
+        s = f(n);
+        double d = fabs(s - sn) / 3;
         if (d < n)
         {
             printf("d = %lf\n", d);
@@ -53,7 +43,7 @@ int main()
         }
         else
         {
-            sn1 = sn2;
+            sn = s;
             continue;
         }
     }

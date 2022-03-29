@@ -12,4 +12,7 @@ int main()
         double z = sqrt(sqrt(log(tan(y - (M_PI / 8)))));
         printf("y(x) = %lf\nz(x) = %lf\n", y, z);
     }
+    else
+        printf("x value if incorrect !\n");
+    return 0;
 }
