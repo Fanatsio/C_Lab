@@ -3,12 +3,12 @@
 
 int main()
 {
-    double x, h;
+    double x, h, i;
     printf("Enter h -> ");
     scanf("%lf", &h);
     printf("x               f(x)\n");
     printf("--------------------\n");
-    while (x < 5)
+    while (x <= 3)
     {
         if (0 <= x && x <= 1.5)
         {
@@ -22,7 +22,8 @@ int main()
             printf("%lf             ", x);
             printf("%lf\n", z);
         }
-        x += h;
+        i++;
+        x = h * i;
     }
     return 0;
 }

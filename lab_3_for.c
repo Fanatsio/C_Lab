@@ -3,12 +3,12 @@
 
 int main() 
 {
-    double h;
+    double h, i;
     printf("Enter h -> ");
     scanf("%lf", &h);
     printf("x               f(x)\n");
     printf("--------------------\n");
-    for (double x; x < 100; x += h)
+    for (double x; x < 100; x = h * i)
     {
         if (0 <= x && x <= 1.5)
         {
@@ -22,6 +22,7 @@ int main()
             printf("%lf             ", x);
             printf("%lf\n", z);
         }
+        i++;
     }
     return 0;
 }
