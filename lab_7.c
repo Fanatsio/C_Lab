@@ -9,11 +9,11 @@ void fill(int n, int m, int a[n][m])
             a[i][j] = rand() % 100;
 }
 
-void trans(int n, int m, int a[n][m], int b[n][m])
+void trans(int n, int m, int a[n][m], int b[m][n])
 {
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-            b[j][i] = a[i][j];
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            b[i][j] = a[j][i];
 }
 
 void mult(int n, int m, int a[n][m], int b[n][m], int c[n][m])
@@ -43,8 +43,8 @@ int main() {
         for (int j = 0; j < m; j++)
             printf("%d ", A[i][j]);
     printf("B: \n");
-    for (int i = 0; i < n; i++, putchar('\n'))
-        for (int j = 0; j < m; j++)
+    for (int i = 0; i < m; i++, putchar('\n'))
+        for (int j = 0; j < n; j++)
             printf("%d ", B[i][j]);
     printf("C: \n");
     for (int i = 0; i < n; i++, putchar('\n'))
