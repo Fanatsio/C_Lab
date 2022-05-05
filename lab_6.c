@@ -2,46 +2,54 @@
 #include <stdlib.h>
 #include <time.h>
 
-void fill(int n, int a[])
+void fill(int n, int a[n])
 {
     for (int i = 0; i < n; i++)
+    {
         a[i] = rand() % 100;
+        printf("%d ", a[i]);
+    }
 }
 
-void rep(int n, int a[])
+void rep(int n, int a[n])
 {
-    int sum, pr, B[n];
+    int sum = 0, pr = 1, b[n];
     for (int i = 0; i < n; i++)
         for (int j = i + 1; j < n; j++)
             if (a[i] == a[j])
             {
                 printf("i = %d    j = %d\n", i, j);
-                sum = a[i] + a[j];
-                pr = a[i] * a[j];
+                for (int k = i; k < j; k++)
+                {
+                    sum += a[k];
+                    pr *= a[k];
+                }
+                sum -= a[j];
+                pr /= a[j];
                 printf("sum = %d    pr = %d\n", sum, pr);
                 for (int k = 0; k < n; k++)
                 {
                     if (k == i)
-                        B[k] = sum;
+                        b[k] = sum;
                     else if (k == j)
-                        B[k] = pr;
+                        b[k] = pr;
                     else
-                        B[k] = a[k];
-                    printf("%d  ", B[k]);
+                        b[k] = a[k];
+                    printf("%d  ", b[k]);
+                    
                 }
             }
 }
 
-int main() {
+int main() 
+{
     srand(time(NULL));
     int n;
     printf("n -> ");
     scanf("%d", &n);
-    int A[n];
-    fill(n, A);
-    for (int i = 0; i < n; i++)
-        printf("%d ", A[i]);
+    int a[n];
+    fill(n, a);
     printf("\n");
-    rep(n, A);
+    rep(n, a);
     return 0;
 }
