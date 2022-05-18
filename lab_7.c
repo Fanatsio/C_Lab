@@ -2,53 +2,54 @@
 #include <stdlib.h>
 #include <time.h>
 
-void fill(int n, int m, int a[n][m])
-{
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-            a[i][j] = rand() % 10;
-}
-
-void trans(int n, int m, int a[n][m], int b[m][n])
+void fill(int m, int n, int a[m][n])
 {
     for (int i = 0; i < m; i++)
         for (int j = 0; j < n; j++)
+            a[i][j] = rand() % 10;
+}
+
+void trans(int m, int n, int a[m][n], int b[n][m])
+{
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < m; j++)
             b[i][j] = a[j][i];
 }
 
-void mult(int n, int m, int a[n][m], int b[m][n], int c[n][n])
+void mult(int m, int n, int a[m][n], int b[n][m], int c[n][n])
 {
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
         {
             c[i][j] = 0;
             for(int k = 0; k < m; k++)
-                c[i][j] += a[i][k] * b[k][j];
+                c[i][j] += b[i][k] * a[k][j];
         }
+}
+
+void pr(int m, int n, int a[][n])
+{
+    for (int i = 0; i < m; i++, putchar('\n'))
+        for (int j = 0; j < n; j++)
+            printf("%6d ", a[i][j]);
 }
 
 int main() {
     srand(time(NULL));
-    int n, m;
-    printf("n -> ");
-    scanf("%d", &n);
+    int m, n;
     printf("m -> ");
     scanf("%d", &m);
-    int a[n][m], b[m][n], c[n][n];
-    fill(n, m, a);
-    trans(n, m, a, b);
-    mult(n, m, a, b, c);
+    printf("n -> ");
+    scanf("%d", &n);
+    int a[m][n], b[n][m], c[n][n];
+    fill(m, n, a);
+    trans(m, n, a, b);
+    mult(m, n, a, b, c);
     printf("A: \n");
-    for (int i = 0; i < n; i++, putchar('\n'))
-        for (int j = 0; j < m; j++)
-            printf("%6d ", a[i][j]);
+    pr(m, n, a);
     printf("B: \n");
-    for (int i = 0; i < m; i++, putchar('\n'))
-        for (int j = 0; j < n; j++)
-            printf("%6d ", b[i][j]);
+    pr(n, m, b);
     printf("C: \n");
-    for (int i = 0; i < n; i++, putchar('\n'))
-        for (int j = 0; j < n; j++)
-            printf("%7d ", c[i][j]);
+    pr(n, n, c);
     return 0;
 }
