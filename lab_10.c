@@ -2,92 +2,80 @@
 #include <stdlib.h>
 #include <time.h>
 
-int *mem(int n, int m) 
+int *mem(int m, int n) 
 {
-  int *a = (int *)malloc(n * m * sizeof(int));
+  int *a = (int *)malloc(m * n * sizeof(int));
   if (!a) 
   {
     printf("Memory allocation error!\n");
     exit(EXIT_FAILURE);
   }
-  int i, j;
-  for (i = 0; i < n; i++)
-    for (j = 0; j < m; j++)
-        a[i * m + j] = i * m + j + 1;
+  for (int i = 0; i < m; i++)
+    for (int j = 0; j < n; j++)
+        a[i * n + j] = i * n + j + 1;
   return a;
 }
 
-void print(int n, int m, int array[])
+void print(int m, int n, int array[])
 {
-  for (int i = 0; i < n; i++) 
+  for (int i = 0; i < m; i++) 
   {
-    for (int j = 0; j < m; j++) 
-      printf("% 4d ", array[i * m + j]);
+    for (int j = 0; j < n; j++) 
+      printf("% 4d ", array[i * n + j]);
     printf("\n");
   }
   printf("\n");
 }
 
-void fill(int n, int m, int A[]) 
+void fill(int m, int n, int A[]) 
 {
-  for (int i = 0; i < n; i++) 
-    for (int j = 0; j < m; j++) 
-      A[i * m + j] = rand() % 10;
+  for (int i = 0; i < m; i++) 
+    for (int j = 0; j < n; j++) 
+      A[i * n + j] = rand() % 10;
 }
 
-void trans(int n, int m, int A[], int B[])
-{
-    for (int i = 0; i < m; i++)
-        for (int j = 0; j < n; j++)
-            B[i * m + j] = A[j * m + i];
-}
-
-void mult(int n, int m, int A[], int B[], int C[])
+void trans(int m, int n, int A[], int B[])
 {
     for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
+        for (int j = 0; j < m; j++)
+            B[i * n + j] = A[j * n + i];
+}
+
+void mult(int m, int n, int A[], int B[], int C[])
+{
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < m; j++)
         {
-            C[i * n + j] = 0;
-            for(int k = 0; k < m; k++)
-                C[i * n + j] += A[i * n + k] * B[k * n + j];
+            C[i * m + j] = 0;
+            for(int k = 0; k < n; k++)
+                C[i * m + j] += A[i * m + k] * B[k * m + j];
         }
 }
 
 int main()
 {
     srand(time(NULL));
-    int n, m;
-    printf("n -> ");
-    scanf("%d", &n);
+    int m, n;
     printf("m -> ");
     scanf("%d", &m);
-    int *A = mem(n, m);
-    printf("\nA:\n");
-    fill(n, m, A);
-    for (int i = 0; i < n; i++) 
-    {
-        for (int j = 0; j < m; j++) 
-            printf("% 4d ", A[i * m + j]);
-        printf("\n");
-    }
-    int *B = mem(m, n);
-    printf("\nB:\n");
-    trans(n, m, A, B);
-    for (int i = 0; i < m; i++) 
-    {
-        for (int j = 0; j < n; j++) 
-            printf("% 4d ", B[i * m + j]);
-        printf("\n");
-    }
-    int *C = mem(n, n);
-    printf("\nC:\n");
-    mult(n, m, A, B, C);
-    for (int i = 0; i < n; i++) 
-    {
-        for (int j = 0; j < n; j++) 
-            printf("% 5d ", C[i * m + j]);
-        printf("\n");
-    }
+    printf("n -> ");
+    scanf("%d", &n);
+    
+    int *A = mem(m, n);
+    printf("A:\n");
+    fill(m, n, A);
+    print(m, n, A);
+    
+    int *B = mem(n, m);
+    printf("B:\n");
+    trans(m, n, A, B);
+    print(n, m, B);
+    
+    int *C = mem(m, m);
+    printf("C:\n");
+    mult(m, n, A, B, C);
+    print(m, m, C);
+    
     free(A);
     free(B);
     free(C);

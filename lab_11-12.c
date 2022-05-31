@@ -61,28 +61,28 @@ void insert1(struct studlist *list)
     }
 
     printf("Enter surname ->\n");
-    scanf("%c", &list[Number - 1].surname);
-    change(list[Number - 1].surname);
+    scanf("%c", &list[Number].surname);
+    change(list[Number].surname);
     
     printf("Enter name ->\n");
-    scanf("%c", &list[Number - 1].name);
-    change(list[Number - 1].name);
+    scanf("%c", &list[Number].name);
+    change(list[Number].name);
     
     printf("Enter group ->\n");
-    scanf("%c", &list[Number - 1].group);
-    change(list[Number - 1].group);
+    scanf("%c", &list[Number].group);
+    change(list[Number].group);
 
     printf("Enter  exam1 ->\n");
-    scanf("%d", &list[Number - 1].exam1);
-    change(list[Number - 1].exam1);
+    scanf("%d", &list[Number].exam1);
+    change(list[Number].exam1);
     
     printf("Enter  exam2 ->\n");
-    scanf("%d", &list[Number - 1].exam2);
-    change(list[Number - 1].exam2);
+    scanf("%d", &list[Number].exam2);
+    change(list[Number].exam2);
     
     printf("Enter  exam3 ->\n");
-    scanf("%d", &list[Number - 1].exam3);
-    change(list[Number - 1].exam3);
+    scanf("%d", &list[Number].exam3);
+    change(list[Number].exam3);
     fflush(stdin);
 }
 
@@ -106,6 +106,7 @@ void delete2(struct studlist *list)
 
 void print3(struct studlist *list)
 {
+    gpa(list);
     for (int i = 0; i < Number; i++)
     {
         printf("%d)", i + 1);
@@ -188,8 +189,6 @@ int main()
         printf("Error");
         exit(1);
     }
-    
-    gpa(list);
     
     strncpy(list[0].surname, "Rechuk", BUF);
     strncpy(list[0].name, "Dmitrii", BUF);

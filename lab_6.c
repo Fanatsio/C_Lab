@@ -11,9 +11,9 @@ void fill(int n, int a[n])
     }
 }
 
-void rep(int n, int a[n])
+void rep(int n, int a[n], int b[n])
 {
-    int sum = 0, pr = 1, b[n];
+    int sum = 0, pr = 1;
     for (int i = 0; i < n; i++)
         for (int j = i + 1; j < n; j++)
             if (a[i] == a[j])
@@ -47,9 +47,9 @@ int main()
     int n;
     printf("n -> ");
     scanf("%d", &n);
-    int a[n];
+    int a[n], b[n];
     fill(n, a);
     printf("\n");
-    rep(n, a);
+    rep(n, a, b);
     return 0;
 }
