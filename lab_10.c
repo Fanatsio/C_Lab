@@ -2,17 +2,17 @@
 #include <stdlib.h>
 #include <time.h>
 
-int *mem(int m, int n) 
+int *memory(int m, int n) 
 {
-  int *a = (int *)malloc(m * n * sizeof(int));
-  if (!a) 
+  int *a = (int *)malloc(n * m * sizeof(int));
+  if (!a)
   {
     printf("Memory allocation error!\n");
     exit(EXIT_FAILURE);
   }
-  for (int i = 0; i < m; i++)
-    for (int j = 0; j < n; j++)
-        a[i * n + j] = i * n + j + 1;
+  for (int i = 0; i < n; i++)
+    for (int j = 0; j < m; j++)
+        a[i * m + j] = i * m + j + 1;
   return a;
 }
 
@@ -56,28 +56,29 @@ int main()
 {
     srand(time(NULL));
     int m, n;
-    printf("m -> ");
+    printf("Количество строк -> ");
     scanf("%d", &m);
-    printf("n -> ");
+    printf("Количество столбцов -> ");
     scanf("%d", &n);
     
-    int *A = mem(m, n);
+    int *A = memory(m, n);
     printf("A:\n");
     fill(m, n, A);
     print(m, n, A);
     
-    int *B = mem(n, m);
+    int *B = memory(n, m);
     printf("B:\n");
     trans(m, n, A, B);
     print(n, m, B);
     
-    int *C = mem(m, m);
+    int *C = memory(m, m);
     printf("C:\n");
     mult(m, n, A, B, C);
     print(m, m, C);
     
     free(A);
     free(B);
-    free(C);
+    //free(C);
+    
     return 0;
-}
+}s

@@ -49,21 +49,21 @@ void insert1(struct studlist *list)
         exit(1);
     }
     
-    char data_input[255] = "";
+    char data_input[255] = " ";
     int data_exam;
     
-    printf("Enter surname -> \n");
-    fgets(data_input, 100, stdin);
+    printf("Enter surname -> ");
+    gets(data_input);
     data_input[strlen(data_input) - 1] = 0;
     strncpy(list[Number].surname, data_input, BUF);
     
     printf("Enter name -> ");
-    fgets(data_input, 100, stdin);
+    gets(data_input);
     data_input[strlen(data_input) - 1] = 0;
     strncpy(list[Number].name, data_input, BUF);
     
     printf("Enter group -> ");
-    fgets(data_input, 100, stdin);
+    gets(data_input);
     data_input[strlen(data_input) - 1] = 0;
     strncpy(list[Number].group, data_input, BUF);
     
@@ -78,6 +78,9 @@ void insert1(struct studlist *list)
     printf("Enter exam3 -> ");
     scanf("%d", &data_exam);
     list[Number].exam3 = data_exam;
+    
+    printf("---------------\n");
+    print3(list);
 }
 
 void delete2(struct studlist *list)
@@ -118,28 +121,28 @@ void load5(FILE *fp)
     fp = fopen("text.txt", "r");
     if (fp == NULL)
     {
-        printf("ERROR OPENNING FILE\n");
+        printf("ERROR: ошибка открытия файла\n");
         exit(1);
     }
 
     if (!fscanf(fp, "%d", &Number))
     {
-        printf("FILE POVREGDEN: NE ZADAN PARAMETR NUMBER\n");
+        printf("ERROR: не задан параметр Number\n");
         exit(2);
     }
 
     list = realloc(list, Number * sizeof(struct studlist));
     if (NULL == list)
     {
-        printf("Error DINAMIC MEMORY\n");
+        printf("Error: ошибка динамической памяти\n");
         exit(3);
     }
 
     for (int i = 0; i < Number; i++)
     {
-        fscanf(fp, " %[^\t]s", (list + i)->surname);
-        fscanf(fp, " %[^\t]s", (list + i)->name);
-        fscanf(fp, " %[^\t]s", (list + i)->group);
+        fscanf(fp, " %s", (list + i)->surname);
+        fscanf(fp, " %s", (list + i)->name);
+        fscanf(fp, " %s", (list + i)->group);
         fscanf(fp, "%d", &(list + i)->exam1);
         fscanf(fp, "%d", &(list + i)->exam2);
         fscanf(fp, "%d", &(list + i)->exam3);
@@ -152,7 +155,7 @@ void save4(FILE *fp)
     fp = fopen("text.txt", "w");
     if (fp == NULL)
     {
-        printf("ERROR: NE UDAYOTSY SOZDAT' FILE\n");
+        printf("ERROR: ошибка создания файла\n");
         exit(4);
     }
 
@@ -160,9 +163,9 @@ void save4(FILE *fp)
 
     for (int i = 0; i < Number; i++)
     {
-        fscanf(fp, " %[^\t]s", (list + i)->surname);
-        fscanf(fp, " %[^\t]s", (list + i)->name);
-        fscanf(fp, " %[^\t]s", (list + i)->group);
+        fscanf(fp, " %s", (list + i)->surname);
+        fscanf(fp, " %s", (list + i)->name);
+        fscanf(fp, " %s", (list + i)->group);
         fscanf(fp, "%d", &(list + i)->exam1);
         fscanf(fp, "%d", &(list + i)->exam2);
         fscanf(fp, "%d", &(list + i)->exam3);
@@ -192,21 +195,21 @@ int main()
 
     strncpy(list[1].surname, "Koplova", BUF);
     strncpy(list[1].name, "Anna", BUF);
-    strncpy(list[1].group, "606-11", BUF);
+    strncpy(list[1].group, "111-11", BUF);
     list[1].exam1 = 5;
     list[1].exam2 = 5;
     list[1].exam3 = 5;
 
     strncpy(list[2].surname, "Shelkov", BUF);
     strncpy(list[2].name, "Egor", BUF);
-    strncpy(list[2].group, "606-11", BUF);
+    strncpy(list[2].group, "222-11", BUF);
     list[2].exam1 = 4;
     list[2].exam2 = 4;
     list[2].exam3 = 5;
 
     strncpy(list[3].surname, "Komarov", BUF);
     strncpy(list[3].name, "Maxim", BUF);
-    strncpy(list[3].group, "606-11", BUF);
+    strncpy(list[3].group, "333-11", BUF);
     list[3].exam1 = 4;
     list[3].exam2 = 4;
     list[3].exam3 = 4;
