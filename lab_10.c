@@ -16,39 +16,39 @@ int *mem(int m, int n)
   return a;
 }
 
-void print(int m, int n, int array[])
+void print(int m, int n, int ar[m][n])
 {
   for (int i = 0; i < m; i++) 
   {
     for (int j = 0; j < n; j++) 
-      printf("% 4d ", array[i * n + j]);
+      printf("% 4d ", ar[i][j]);
     printf("\n");
   }
   printf("\n");
 }
 
-void fill(int m, int n, int A[]) 
+void fill(int m, int n, int A[m][n]) 
 {
-  for (int i = 0; i < m; i++) 
-    for (int j = 0; j < n; j++) 
-      A[i * n + j] = rand() % 10;
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            A[i][j] = rand() % 10;
 }
 
-void trans(int m, int n, int A[], int B[])
+void trans(int m, int n, int A[m][n], int B[n][m])
 {
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < m; j++)
-            B[i * n + j] = A[j * n + i];
+    for (int i = 0; i < m; i++)
+        for (int j = 0; j < n; j++)
+            B[i][j] = A[j][i];
 }
 
-void mult(int m, int n, int A[], int B[], int C[])
+void mult(int m, int n, int A[m][n], int B[n][m], int C[m][m])
 {
     for (int i = 0; i < m; i++)
         for (int j = 0; j < m; j++)
         {
-            C[i * m + j] = 0;
+            C[i][j] = 0;
             for(int k = 0; k < n; k++)
-                C[i * m + j] += A[i * m + k] * B[k * m + j];
+                C[i][j] += A[i][k] * B[k][j];
         }
 }
 

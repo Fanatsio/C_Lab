@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BUF 10
+#define BUF 15
 
 int Number = 4;
 
@@ -15,27 +15,17 @@ struct studlist
     int exam2; //Второй экзамен
     int exam3; //Третий экзамен
     float gpa; //grade point average(Средний балл)
-}* list;
-
-void change(char addr[])
-{
-    char str[BUF];
-
-    fflush(stdin);
-
-    scanf("%[^\n]s", str);
-
-    strncpy(addr, str, BUF);
-}
+}*list;
 
 void gpa(struct studlist *list)
 {
     for (int i = 0; i < Number; i++)
-    {
         list[i].gpa = (list[i].exam1 + list[i].exam2 + list[i].exam3) / 3;
-    }
+}
+
+void getgpa(struct studlist *list)
+{
     for (int i = 0; i < Number; i++)
-    {
         if (list[i].gpa >= 4.5)
         {
             printf("%d)", i + 1);
@@ -47,7 +37,6 @@ void gpa(struct studlist *list)
             printf("%4d    ", list[i].exam3);
             printf("%4f\n", list[i].gpa);
         }
-    }
 }
 
 void insert1(struct studlist *list)
@@ -59,31 +48,36 @@ void insert1(struct studlist *list)
         printf("Error");
         exit(1);
     }
-
-    printf("Enter surname ->\n");
-    scanf("%c", &list[Number].surname);
-    change(list[Number].surname);
     
-    printf("Enter name ->\n");
-    scanf("%c", &list[Number].name);
-    change(list[Number].name);
+    char data_input[255] = "";
+    int data_exam;
     
-    printf("Enter group ->\n");
-    scanf("%c", &list[Number].group);
-    change(list[Number].group);
-
-    printf("Enter  exam1 ->\n");
-    scanf("%d", &list[Number].exam1);
-    change(list[Number].exam1);
+    printf("Enter surname -> \n");
+    fgets(data_input, 100, stdin);
+    data_input[strlen(data_input) - 1] = 0;
+    strncpy(list[Number].surname, data_input, BUF);
     
-    printf("Enter  exam2 ->\n");
-    scanf("%d", &list[Number].exam2);
-    change(list[Number].exam2);
+    printf("Enter name -> ");
+    fgets(data_input, 100, stdin);
+    data_input[strlen(data_input) - 1] = 0;
+    strncpy(list[Number].name, data_input, BUF);
     
-    printf("Enter  exam3 ->\n");
-    scanf("%d", &list[Number].exam3);
-    change(list[Number].exam3);
-    fflush(stdin);
+    printf("Enter group -> ");
+    fgets(data_input, 100, stdin);
+    data_input[strlen(data_input) - 1] = 0;
+    strncpy(list[Number].group, data_input, BUF);
+    
+    printf("Enter exam1 -> ");
+    scanf("%d", &data_exam);
+    list[Number].exam1 = data_exam;
+    
+    printf("Enter exam2 -> ");
+    scanf("%d", &data_exam);
+    list[Number].exam2 = data_exam;
+    
+    printf("Enter exam3 -> ");
+    scanf("%d", &data_exam);
+    list[Number].exam3 = data_exam;
 }
 
 void delete2(struct studlist *list)
@@ -106,10 +100,9 @@ void delete2(struct studlist *list)
 
 void print3(struct studlist *list)
 {
-    gpa(list);
     for (int i = 0; i < Number; i++)
     {
-        printf("%d)", i + 1);
+        printf("%d) ", i + 1);
         printf("%-*s\t", BUF, list[i].surname);
         printf("%-*s\t", BUF, list[i].name);
         printf("%-*s\t", BUF, list[i].group);
@@ -236,6 +229,7 @@ int main()
                 delete2(list);
                 break;
             case 3:
+                gpa(list);
                 print3(list);
                 break;
             case 4:
@@ -247,7 +241,7 @@ int main()
             case 6:
                 return 0;
             case 7:
-                gpa(list);
+                getgpa(list);
                 break;
             default:
                 printf("You entered an incorrect value");

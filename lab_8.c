@@ -1,16 +1,27 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <ctype.h>
-#include <conio.h>
+#include <termios.h>
+#include <unistd.h>
+ 
+int mygetch ()
+{
+    struct termios oldt , newt ;
+    int c ;
+    tcgetattr ( STDIN_FILENO , & oldt ) ;
+    newt = oldt ;
+    newt . c_lflag &= ~( ICANON | ECHO ) ;
+    tcsetattr ( STDIN_FILENO , TCSANOW , & newt ) ;
+    c = getchar () ;
+    tcsetattr ( STDIN_FILENO , TCSANOW , & oldt ) ;
+    return c ;
+}
  
 int main() 
 {
     char s[80], *p;
     const int esc = 27;
+    int a = mygetch();
     while (1)
     {
-        c = getch();
         printf("Enter -> ");
         scanf("%s", s);
         p = strchr(s, '.');
@@ -29,7 +40,7 @@ int main()
         else 
         {
             printf("Число вещественное\n");
-            if (c == 27)
+            if (a == 27)
                 break;
             else
                 continue;
