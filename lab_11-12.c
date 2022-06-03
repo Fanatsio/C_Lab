@@ -14,13 +14,13 @@ struct studlist
     int exam1; //Первый экзамен
     int exam2; //Второй экзамен
     int exam3; //Третий экзамен
-    float gpa; //grade point average(Средний балл)
+    double gpa; //grade point average(Средний балл)
 }*list;
 
 void gpa(struct studlist *list)
 {
     for (int i = 0; i < Number; i++)
-        list[i].gpa = (list[i].exam1 + list[i].exam2 + list[i].exam3) / 3;
+        list[i].gpa = (list[i].exam1 + list[i].exam2 + list[i].exam3) / 3.0;
 }
 
 void getgpa(struct studlist *list)
@@ -35,7 +35,7 @@ void getgpa(struct studlist *list)
             printf("%4d ", list[i].exam1);
             printf("%4d ", list[i].exam2);
             printf("%4d    ", list[i].exam3);
-            printf("%4f\n", list[i].gpa);
+            printf("%4lf\n", list[i].gpa);
         }
 }
 
@@ -49,35 +49,34 @@ void insert1(struct studlist *list)
         exit(1);
     }
     
-    char data_input[255] = " ";
+    char *data_input = (char *)malloc(sizeof(char));
     int data_exam;
+    
+    gets(data_input);
     
     printf("Enter surname -> ");
     gets(data_input);
-    data_input[strlen(data_input) - 1] = 0;
-    strncpy(list[Number].surname, data_input, BUF);
+    strncpy(list[Number - 1].surname, data_input, BUF);
     
     printf("Enter name -> ");
     gets(data_input);
-    data_input[strlen(data_input) - 1] = 0;
-    strncpy(list[Number].name, data_input, BUF);
+    strncpy(list[Number - 1].name, data_input, BUF);
     
     printf("Enter group -> ");
     gets(data_input);
-    data_input[strlen(data_input) - 1] = 0;
-    strncpy(list[Number].group, data_input, BUF);
+    strncpy(list[Number - 1].group, data_input, BUF);
     
     printf("Enter exam1 -> ");
     scanf("%d", &data_exam);
-    list[Number].exam1 = data_exam;
+    list[Number - 1].exam1 = data_exam;
     
     printf("Enter exam2 -> ");
     scanf("%d", &data_exam);
-    list[Number].exam2 = data_exam;
+    list[Number - 1].exam2 = data_exam;
     
     printf("Enter exam3 -> ");
     scanf("%d", &data_exam);
-    list[Number].exam3 = data_exam;
+    list[Number - 1].exam3 = data_exam;
     
     printf("---------------\n");
     print3(list);
@@ -93,16 +92,14 @@ void delete2(struct studlist *list)
     for (int i = n - 1; i < Number; i++)
         list[i] = list[i + 1];
     Number--;
-    list = realloc(list, Number * sizeof(struct studlist));
-    if (NULL == list)
-    {
-        printf("Error");
-        exit(1);
-    }
+    
+    printf("---------------\n");
+    print3(list);
 }
 
 void print3(struct studlist *list)
 {
+    gpa(list);
     for (int i = 0; i < Number; i++)
     {
         printf("%d) ", i + 1);
@@ -116,7 +113,7 @@ void print3(struct studlist *list)
     }
 }
 
-void load5(FILE *fp)
+void load4(FILE *fp)
 {
     fp = fopen("text.txt", "r");
     if (fp == NULL)
@@ -131,13 +128,6 @@ void load5(FILE *fp)
         exit(2);
     }
 
-    list = realloc(list, Number * sizeof(struct studlist));
-    if (NULL == list)
-    {
-        printf("Error: ошибка динамической памяти\n");
-        exit(3);
-    }
-
     for (int i = 0; i < Number; i++)
     {
         fscanf(fp, " %s", (list + i)->surname);
@@ -150,7 +140,7 @@ void load5(FILE *fp)
     fclose(fp);
 }
 
-void save4(FILE *fp)
+void save3(FILE *fp)
 {
     fp = fopen("text.txt", "w");
     if (fp == NULL)
@@ -217,7 +207,7 @@ int main()
     for (;;)
     {
         printf("---------------\n");
-        printf("Enter comand\n 1-insert\n 2-delete\n 3-print\n 4-save\n 5-loading\n 6-exit\n 7-gpa\n");
+        printf("Enter comand\n 1-insert\n 2-delete\n 3-save\n 4-loading\n 5-exit\n 6-gpa\n");
         printf("---------------\n");
         scanf("%d", &l);
         printf("---------------\n");
@@ -232,18 +222,14 @@ int main()
                 delete2(list);
                 break;
             case 3:
-                gpa(list);
-                print3(list);
+                save3(fp);
                 break;
             case 4:
-                save4(fp);
+                load4(fp);
                 break;
             case 5:
-                load5(fp);
-                break;
-            case 6:
                 return 0;
-            case 7:
+            case 6:
                 getgpa(list);
                 break;
             default:
