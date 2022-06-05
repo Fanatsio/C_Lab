@@ -6,7 +6,7 @@ void fill(int n, int a[n])
 {
     for (int i = 0; i < n; i++)
     {
-        a[i] = rand() % 100;
+        a[i] = rand() % 20 - 10;
         printf("%d ", a[i]);
     }
 }
@@ -36,7 +36,6 @@ void rep(int n, int a[n], int b[n])
                     else
                         b[k] = a[k];
                     printf("%d  ", b[k]);
-                    
                 }
             }
 }

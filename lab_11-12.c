@@ -113,7 +113,7 @@ void print3(struct studlist *list)
     }
 }
 
-void load4(FILE *fp)
+void load4(FILE *fp, struct studlist *list)
 {
     fp = fopen("text.txt", "r");
     if (fp == NULL)
@@ -138,9 +138,10 @@ void load4(FILE *fp)
         fscanf(fp, "%d", &(list + i)->exam3);
     }
     fclose(fp);
+    print3(list);
 }
 
-void save3(FILE *fp)
+void save3(FILE *fp, struct studlist *list)
 {
     fp = fopen("text.txt", "w");
     if (fp == NULL)
@@ -207,7 +208,7 @@ int main()
     for (;;)
     {
         printf("---------------\n");
-        printf("Enter comand\n 1-insert\n 2-delete\n 3-save\n 4-loading\n 5-exit\n 6-gpa\n");
+        printf("Enter comand\n 1-insert\n 2-delete\n 3-save\n 4-loading\n 5-exit\n 6-gpa\n 7-print \n");
         printf("---------------\n");
         scanf("%d", &l);
         printf("---------------\n");
@@ -222,15 +223,18 @@ int main()
                 delete2(list);
                 break;
             case 3:
-                save3(fp);
+                save3(fp, list);
                 break;
             case 4:
-                load4(fp);
+                load4(fp, list);
                 break;
             case 5:
                 return 0;
             case 6:
                 getgpa(list);
+                break;
+            case 7:
+                print3(list);
                 break;
             default:
                 printf("You entered an incorrect value");
