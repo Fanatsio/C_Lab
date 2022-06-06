@@ -6,8 +6,7 @@
 
 int Number = 4;
 
-struct studlist
-{
+struct studlist{
     char surname[BUF]; //Фамилия
     char name[BUF]; //Имя
     char group[BUF]; //Группа
@@ -17,14 +16,12 @@ struct studlist
     double gpa; //grade point average(Средний балл)
 }*list;
 
-void gpa(struct studlist *list)
-{
+void gpa(struct studlist *list){
     for (int i = 0; i < Number; i++)
         list[i].gpa = (list[i].exam1 + list[i].exam2 + list[i].exam3) / 3.0;
 }
 
-void getgpa(struct studlist *list)
-{
+void getgpa(struct studlist *list){
     for (int i = 0; i < Number; i++)
         if (list[i].gpa >= 4.5)
         {
@@ -39,66 +36,73 @@ void getgpa(struct studlist *list)
         }
 }
 
-void insert1(struct studlist *list)
-{
-    Number++;
+void insert1(struct studlist *list){
+    int in;
+    while (1) {
+        Number++;
+        list = realloc(list, Number * sizeof(struct studlist));
+        if (NULL == list){
+            printf("Error");
+            exit(1);
+        }
+        
+        char *data_input = (char *)malloc(sizeof(char));
+        
+        gets(data_input);
+        
+        printf("Enter surname -> ");
+        gets(data_input);
+        strncpy(list[Number - 1].surname, data_input, BUF);
+        
+        printf("Enter name -> ");
+        gets(data_input);
+        strncpy(list[Number - 1].name, data_input, BUF);
+        
+        printf("Enter group -> ");
+        gets(data_input);
+        strncpy(list[Number - 1].group, data_input, BUF);
+        
+        printf("Enter exam1 -> ");
+        scanf("%d", &list[Number - 1].exam1);;
+        
+        printf("Enter exam2 -> ");
+        scanf("%d", &list[Number - 1].exam2);
+        
+        printf("Enter exam3 -> ");
+        scanf("%d", &list[Number - 1].exam3);
+        
+        printf("добавить ещё строку ?\nВведите Да - 1 / Нет - 2\n");
+        scanf("%d", &in);
+    
+        if (in == 1)
+          continue;
+        else
+          break;
+    }
+    printf("---------------\n");
+    output(list);
+}
+
+void delete2(struct studlist *list){
+    int n;
+    printf("Enter string number -> ");
+    scanf("%d", &n);
+
+    for (int i = n - 1; i < Number; i++)
+        list[i] = list[i + 1];
+        
+    Number--;
     list = realloc(list, Number * sizeof(struct studlist));
-    if (NULL == list)
-    {
+    if (NULL == list){
         printf("Error");
         exit(1);
     }
     
-    char *data_input = (char *)malloc(sizeof(char));
-    int data_exam;
-    
-    gets(data_input);
-    
-    printf("Enter surname -> ");
-    gets(data_input);
-    strncpy(list[Number - 1].surname, data_input, BUF);
-    
-    printf("Enter name -> ");
-    gets(data_input);
-    strncpy(list[Number - 1].name, data_input, BUF);
-    
-    printf("Enter group -> ");
-    gets(data_input);
-    strncpy(list[Number - 1].group, data_input, BUF);
-    
-    printf("Enter exam1 -> ");
-    scanf("%d", &data_exam);
-    list[Number - 1].exam1 = data_exam;
-    
-    printf("Enter exam2 -> ");
-    scanf("%d", &data_exam);
-    list[Number - 1].exam2 = data_exam;
-    
-    printf("Enter exam3 -> ");
-    scanf("%d", &data_exam);
-    list[Number - 1].exam3 = data_exam;
-    
     printf("---------------\n");
-    print3(list);
+    output(list);
 }
 
-void delete2(struct studlist *list)
-{
-    int n;
-    printf("Enter string number -> ");
-    scanf("%d", &n);
-    fflush(stdin);
-
-    for (int i = n - 1; i < Number; i++)
-        list[i] = list[i + 1];
-    Number--;
-    
-    printf("---------------\n");
-    print3(list);
-}
-
-void print3(struct studlist *list)
-{
+void output(struct studlist *list){
     gpa(list);
     for (int i = 0; i < Number; i++)
     {
@@ -113,8 +117,7 @@ void print3(struct studlist *list)
     }
 }
 
-void load4(FILE *fp, struct studlist *list)
-{
+void load4(FILE *fp, struct studlist *list){
     fp = fopen("text.txt", "r");
     if (fp == NULL)
     {
@@ -130,13 +133,13 @@ void load4(FILE *fp, struct studlist *list)
         fscanf(fp, "%d", &(list + i)->exam1);
         fscanf(fp, "%d", &(list + i)->exam2);
         fscanf(fp, "%d", &(list + i)->exam3);
+        fscanf(fp, "%lf", &(list + i)->gpa);
     }
+    output(list);
     fclose(fp);
-    print3(list);
 }
 
-void save3(FILE *fp, struct studlist *list)
-{
+void save3(FILE *fp, struct studlist *list){
     fp = fopen("text.txt", "w");
     if (fp == NULL)
     {
@@ -152,13 +155,13 @@ void save3(FILE *fp, struct studlist *list)
         fscanf(fp, "%d", &(list + i)->exam1);
         fscanf(fp, "%d", &(list + i)->exam2);
         fscanf(fp, "%d", &(list + i)->exam3);
+        fscanf(fp, "%lf", &(list + i)->gpa);
     }
 
     fclose(fp);
 }
 
-int main()
-{
+int main(){
     int l;
     FILE *fp = NULL;
     
@@ -226,7 +229,7 @@ int main()
                 getgpa(list);
                 break;
             case 7:
-                print3(list);
+                output(list);
                 break;
             default:
                 printf("You entered an incorrect value");
@@ -234,7 +237,6 @@ int main()
     }
     
     free(list);
-    free(data_input);
     
     return 0;
 }
