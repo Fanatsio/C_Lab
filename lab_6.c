@@ -6,14 +6,14 @@ void fill(int n, int a[n])
 {
     for (int i = 0; i < n; i++)
     {
-        a[i] = rand() % 20 - 10;
+        a[i] = rand() % 10;
         printf("%d ", a[i]);
     }
 }
 
 void rep(int n, int a[n], int b[n])
 {
-    int sum = 0, pr = 1;
+    long int sum = 0, pr = 1;
     for (int i = 0; i < n; i++)
         for (int j = i + 1; j < n; j++)
             if (a[i] == a[j])
@@ -26,7 +26,7 @@ void rep(int n, int a[n], int b[n])
                 }
                 sum -= a[j];
                 pr /= a[j];
-                printf("sum = %d    pr = %d\n", sum, pr);
+                printf("sum = %ld    pr = %ld\n", sum, pr);
                 for (int k = 0; k < n; k++)
                 {
                     if (k == i)

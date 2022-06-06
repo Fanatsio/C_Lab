@@ -122,12 +122,6 @@ void load4(FILE *fp, struct studlist *list)
         exit(1);
     }
 
-    if (!fscanf(fp, "%d", &Number))
-    {
-        printf("ERROR: не задан параметр Number\n");
-        exit(2);
-    }
-
     for (int i = 0; i < Number; i++)
     {
         fscanf(fp, " %s", (list + i)->surname);
@@ -147,10 +141,8 @@ void save3(FILE *fp, struct studlist *list)
     if (fp == NULL)
     {
         printf("ERROR: ошибка создания файла\n");
-        exit(4);
+        exit(1);
     }
-
-    fprintf(fp, "%d\n", Number);
 
     for (int i = 0; i < Number; i++)
     {
@@ -242,6 +234,7 @@ int main()
     }
     
     free(list);
+    free(data_input);
     
     return 0;
 }

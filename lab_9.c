@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 
@@ -10,12 +11,12 @@ void unique(char s[], int c[])
     for (int i = 0; i < l; i ++) 
         for (int j = i; j < l; j ++) 
         {
-            for (int k = 0; k < 255; k ++) 
+            for (int k = 0; k < 255; k++) 
             {
                 c[k] = 0;
                 unique = true;
             }
-            for (int k = i; k <= j; k ++) 
+            for (int k = i; k <= j; k++) 
             {
                 c[s[k]]++;
                 if (c[s[k]] > 1) 
