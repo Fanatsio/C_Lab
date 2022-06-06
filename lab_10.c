@@ -4,7 +4,7 @@
 
 int *memory(int m, int n) 
 {
-  int *a = (int *)malloc(n * m * sizeof(int));
+  int *a = (int *)malloc(100 * 100 * sizeof(int));
   if (!a)
   {
     printf("Memory allocation error!\n");
