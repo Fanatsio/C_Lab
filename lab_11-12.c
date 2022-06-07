@@ -38,7 +38,7 @@ void getgpa(struct studlist *list){
 
 void insert1(struct studlist *list){
     int in;
-    while (1) {
+    for (;;) {
         Number++;
         list = realloc(list, Number * sizeof(struct studlist));
         if (NULL == list){
@@ -73,6 +73,8 @@ void insert1(struct studlist *list){
         
         printf("добавить ещё строку ?\nВведите Да - 1 / Нет - 2\n");
         scanf("%d", &in);
+        
+        free(data_input);
     
         if (in == 1)
           continue;
@@ -85,19 +87,18 @@ void insert1(struct studlist *list){
 
 void delete2(struct studlist *list){
     int n;
-    printf("Enter string number -> ");
+    printf("Введите номер строки -> ");
     scanf("%d", &n);
-
+    
     for (int i = n - 1; i < Number; i++)
         list[i] = list[i + 1];
-        
+            
     Number--;
     list = realloc(list, Number * sizeof(struct studlist));
     if (NULL == list){
         printf("Error");
         exit(1);
     }
-    
     printf("---------------\n");
     output(list);
 }
@@ -124,16 +125,31 @@ void load4(FILE *fp, struct studlist *list){
         printf("ERROR: ошибка открытия файла\n");
         exit(1);
     }
+    
+    char str[255];
+    char *istr;
 
-    for (int i = 0; i < Number; i++)
-    {
-        fscanf(fp, " %s", (list + i)->surname);
-        fscanf(fp, " %s", (list + i)->name);
-        fscanf(fp, " %s", (list + i)->group);
-        fscanf(fp, "%d", &(list + i)->exam1);
-        fscanf(fp, "%d", &(list + i)->exam2);
-        fscanf(fp, "%d", &(list + i)->exam3);
-        fscanf(fp, "%lf", &(list + i)->gpa);
+    while (fgets(str, 256, fp) != NULL) {
+        istr = strtok(str, "|");
+        sprintf(list[Number].surname, "%s", istr);
+    
+        istr = strtok(NULL, "|");
+        sprintf(list[Number].name, "%s", istr);
+    
+        istr = strtok(NULL, "|");
+        sprintf(list[Number].group, "%s", istr);
+    
+        istr = strtok(NULL, "|");
+        list[Number].exam1 = atoi(istr);
+    
+        istr = strtok(NULL, "|");
+        list[Number].exam2 = atoi(istr);
+    
+        istr = strtok(NULL, "|");
+        list[Number].exam3 = atoi(istr);
+    
+        istr = strtok(NULL, "|");
+        list[Number].gpa = atoi(istr);
     }
     output(list);
     fclose(fp);
@@ -148,15 +164,8 @@ void save3(FILE *fp, struct studlist *list){
     }
 
     for (int i = 0; i < Number; i++)
-    {
-        fscanf(fp, " %s", (list + i)->surname);
-        fscanf(fp, " %s", (list + i)->name);
-        fscanf(fp, " %s", (list + i)->group);
-        fscanf(fp, "%d", &(list + i)->exam1);
-        fscanf(fp, "%d", &(list + i)->exam2);
-        fscanf(fp, "%d", &(list + i)->exam3);
-        fscanf(fp, "%lf", &(list + i)->gpa);
-    }
+        fprintf(fp, "%s|%s|%s|%d|%d|%d|%lf\n", list[i].surname, list[i].name, list[i].group, list[i].exam1, list[i].exam2, list[i].exam3, list[i].gpa);
+        
 
     fclose(fp);
 }
@@ -172,29 +181,29 @@ int main(){
         exit(1);
     }
     
-    strncpy(list[0].surname, "Rechuk", BUF);
-    strncpy(list[0].name, "Dmitrii", BUF);
+    strncpy(list[0].surname, "Речук", BUF);
+    strncpy(list[0].name, "Дмитрий", BUF);
     strncpy(list[0].group, "606-11", BUF);
     list[0].exam1 = 5;
     list[0].exam2 = 4;
     list[0].exam3 = 5;
 
-    strncpy(list[1].surname, "Koplova", BUF);
-    strncpy(list[1].name, "Anna", BUF);
+    strncpy(list[1].surname, "Копылова", BUF);
+    strncpy(list[1].name, "Анна", BUF);
     strncpy(list[1].group, "111-11", BUF);
     list[1].exam1 = 5;
     list[1].exam2 = 5;
     list[1].exam3 = 5;
 
-    strncpy(list[2].surname, "Shelkov", BUF);
-    strncpy(list[2].name, "Egor", BUF);
+    strncpy(list[2].surname, "Шелков", BUF);
+    strncpy(list[2].name, "Егор", BUF);
     strncpy(list[2].group, "222-11", BUF);
     list[2].exam1 = 4;
     list[2].exam2 = 4;
     list[2].exam3 = 5;
 
-    strncpy(list[3].surname, "Komarov", BUF);
-    strncpy(list[3].name, "Maxim", BUF);
+    strncpy(list[3].surname, "Комаров", BUF);
+    strncpy(list[3].name, "Максим", BUF);
     strncpy(list[3].group, "333-11", BUF);
     list[3].exam1 = 4;
     list[3].exam2 = 4;
@@ -203,7 +212,7 @@ int main(){
     for (;;)
     {
         printf("---------------\n");
-        printf("Enter comand\n 1-insert\n 2-delete\n 3-save\n 4-loading\n 5-exit\n 6-gpa\n 7-print \n");
+        printf("Меню\n 1-Добавить запись\n 2-Удалить запись\n 3-Сохранить в файл\n 4-Загрузить из файла\n 5-Просмотреть все записи\n 6-Просмотреть студентов с средним баллом больше 4.5\n 7-Завершить программу \n");
         printf("---------------\n");
         scanf("%d", &l);
         printf("---------------\n");
@@ -224,13 +233,13 @@ int main(){
                 load4(fp, list);
                 break;
             case 5:
-                return 0;
+                output(list);
+                break;
             case 6:
                 getgpa(list);
                 break;
             case 7:
-                output(list);
-                break;
+                return 0;
             default:
                 printf("You entered an incorrect value");
         }
