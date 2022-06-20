@@ -2,17 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BUF 15
-
 int Number = 4;
 
 struct studlist{
-    char surname[BUF]; //Фамилия
-    char name[BUF]; //Имя
-    char group[BUF]; //Группа
+    char surname[15]; //Фамилия
+    char name[15]; //Имя
+    char group[15]; //Группа
     int exam1; //Первый экзамен
     int exam2; //Второй экзамен
-    int exam3; //Третий экзамен
+    int exam3; //третий экзамен
     double gpa; //grade point average(Средний балл)
 }*list;
 
@@ -26,9 +24,9 @@ void getgpa(struct studlist *list){
         if (list[i].gpa >= 4.5)
         {
             printf("%d)", i + 1);
-            printf("%-*s\t", BUF, list[i].surname);
-            printf("%-*s\t", BUF, list[i].name);
-            printf("%-*s\t", BUF, list[i].group);
+            printf("%-*s\t", 15, list[i].surname);
+            printf("%-*s\t", 15, list[i].name);
+            printf("%-*s\t", 15, list[i].group);
             printf("%4d ", list[i].exam1);
             printf("%4d ", list[i].exam2);
             printf("%4d    ", list[i].exam3);
@@ -40,7 +38,7 @@ void insert1(struct studlist *list){
     int in;
     for (;;) {
         Number++;
-        list = realloc(list, Number * sizeof(struct studlist));
+        list = realloc(list, 100 * sizeof(struct studlist));
         if (NULL == list){
             printf("Error");
             exit(1);
@@ -52,15 +50,15 @@ void insert1(struct studlist *list){
         
         printf("Enter surname -> ");
         gets(data_input);
-        strncpy(list[Number - 1].surname, data_input, BUF);
+        strncpy(list[Number - 1].surname, data_input, 15);
         
         printf("Enter name -> ");
         gets(data_input);
-        strncpy(list[Number - 1].name, data_input, BUF);
+        strncpy(list[Number - 1].name, data_input, 15);
         
         printf("Enter group -> ");
         gets(data_input);
-        strncpy(list[Number - 1].group, data_input, BUF);
+        strncpy(list[Number - 1].group, data_input, 15);
         
         printf("Enter exam1 -> ");
         scanf("%d", &list[Number - 1].exam1);;
@@ -71,11 +69,11 @@ void insert1(struct studlist *list){
         printf("Enter exam3 -> ");
         scanf("%d", &list[Number - 1].exam3);
         
-        printf("добавить ещё строку ?\nВведите Да - 1 / Нет - 2\n");
+        printf("add more string ?\nEnter‚Yes - 1 / No - 2\n");
         scanf("%d", &in);
         
         free(data_input);
-    
+        
         if (in == 1)
           continue;
         else
@@ -87,14 +85,14 @@ void insert1(struct studlist *list){
 
 void delete2(struct studlist *list){
     int n;
-    printf("Введите номер строки -> ");
+    printf("Enter string number -> ");
     scanf("%d", &n);
     
     for (int i = n - 1; i < Number; i++)
         list[i] = list[i + 1];
             
     Number--;
-    list = realloc(list, Number * sizeof(struct studlist));
+    list = realloc(list, 100 * sizeof(struct studlist));
     if (NULL == list){
         printf("Error");
         exit(1);
@@ -108,9 +106,9 @@ void output(struct studlist *list){
     for (int i = 0; i < Number; i++)
     {
         printf("%d) ", i + 1);
-        printf("%-*s\t", BUF, list[i].surname);
-        printf("%-*s\t", BUF, list[i].name);
-        printf("%-*s\t", BUF, list[i].group);
+        printf("%-*s\t", 15, list[i].surname);
+        printf("%-*s\t", 15, list[i].name);
+        printf("%-*s\t", 15, list[i].group);
         printf("%4d ", list[i].exam1);
         printf("%4d ", list[i].exam2);
         printf("%4d    ", list[i].exam3);
@@ -122,35 +120,45 @@ void load4(FILE *fp, struct studlist *list){
     fp = fopen("text.txt", "r");
     if (fp == NULL)
     {
-        printf("ERROR: ошибка открытия файла\n");
+        printf("ERROR\n");
         exit(1);
     }
     
     char str[255];
+    char num[255];
     char *istr;
 
-    while (fgets(str, 256, fp) != NULL) {
+    for (int i = 0; ; i++){
+        if (i == Number)
+            break;
+        fgets(str, 256, fp);
+        
         istr = strtok(str, "|");
-        sprintf(list[Number].surname, "%s", istr);
-    
+        Number = atoi(istr);
+            
         istr = strtok(NULL, "|");
-        sprintf(list[Number].name, "%s", istr);
-    
+        sprintf(list[i].surname, "%s", istr);
+            
         istr = strtok(NULL, "|");
-        sprintf(list[Number].group, "%s", istr);
-    
+        sprintf(list[i].name, "%s", istr);
+            
         istr = strtok(NULL, "|");
-        list[Number].exam1 = atoi(istr);
-    
+        sprintf(list[i].group, "%s", istr);
+            
         istr = strtok(NULL, "|");
-        list[Number].exam2 = atoi(istr);
-    
+        list[i].exam1 = atoi(istr);
+            
         istr = strtok(NULL, "|");
-        list[Number].exam3 = atoi(istr);
-    
+        list[i].exam2 = atoi(istr);
+            
         istr = strtok(NULL, "|");
-        list[Number].gpa = atoi(istr);
+        list[i].exam3 = atoi(istr);
+            
+        istr = strtok(NULL, "|");
+        list[i].gpa = atoi(istr);
     }
+    
+    printf("Number = %d\n", Number);
     output(list);
     fclose(fp);
 }
@@ -159,12 +167,12 @@ void save3(FILE *fp, struct studlist *list){
     fp = fopen("text.txt", "w");
     if (fp == NULL)
     {
-        printf("ERROR: ошибка создания файла\n");
+        printf("ERROR\n");
         exit(1);
     }
-
+    
     for (int i = 0; i < Number; i++)
-        fprintf(fp, "%s|%s|%s|%d|%d|%d|%lf\n", list[i].surname, list[i].name, list[i].group, list[i].exam1, list[i].exam2, list[i].exam3, list[i].gpa);
+        fprintf(fp, "%d|%s|%s|%s|%d|%d|%d|%lf\n", Number, list[i].surname, list[i].name, list[i].group, list[i].exam1, list[i].exam2, list[i].exam3, list[i].gpa);
         
 
     fclose(fp);
@@ -174,37 +182,37 @@ int main(){
     int l;
     FILE *fp = NULL;
     
-    struct studlist *list = (struct studlist *)malloc(Number * sizeof(struct studlist));
+    struct studlist *list = (struct studlist *)malloc(100 * sizeof(struct studlist));
     if (NULL == list)
     {
         printf("Error");
         exit(1);
     }
     
-    strncpy(list[0].surname, "Речук", BUF);
-    strncpy(list[0].name, "Дмитрий", BUF);
-    strncpy(list[0].group, "606-11", BUF);
+    strncpy(list[0].surname, "Rechuk", 15);
+    strncpy(list[0].name, "Dmitrii", 15);
+    strncpy(list[0].group, "606-11", 15);
     list[0].exam1 = 5;
     list[0].exam2 = 4;
     list[0].exam3 = 5;
 
-    strncpy(list[1].surname, "Копылова", BUF);
-    strncpy(list[1].name, "Анна", BUF);
-    strncpy(list[1].group, "111-11", BUF);
+    strncpy(list[1].surname, "Koplova", 15);
+    strncpy(list[1].name, "Anna", 15);
+    strncpy(list[1].group, "111-11", 15);
     list[1].exam1 = 5;
     list[1].exam2 = 5;
     list[1].exam3 = 5;
 
-    strncpy(list[2].surname, "Шелков", BUF);
-    strncpy(list[2].name, "Егор", BUF);
-    strncpy(list[2].group, "222-11", BUF);
+    strncpy(list[2].surname, "Shelkov", 15);
+    strncpy(list[2].name, "Egor", 15);
+    strncpy(list[2].group, "222-11", 15);
     list[2].exam1 = 4;
     list[2].exam2 = 4;
     list[2].exam3 = 5;
 
-    strncpy(list[3].surname, "Комаров", BUF);
-    strncpy(list[3].name, "Максим", BUF);
-    strncpy(list[3].group, "333-11", BUF);
+    strncpy(list[3].surname, "Komorov", 15);
+    strncpy(list[3].name, "Maxim", 15);
+    strncpy(list[3].group, "333-11", 15);
     list[3].exam1 = 4;
     list[3].exam2 = 4;
     list[3].exam3 = 4;
@@ -212,7 +220,7 @@ int main(){
     for (;;)
     {
         printf("---------------\n");
-        printf("Меню\n 1-Добавить запись\n 2-Удалить запись\n 3-Сохранить в файл\n 4-Загрузить из файла\n 5-Просмотреть все записи\n 6-Просмотреть студентов с средним баллом больше 4.5\n 7-Завершить программу \n");
+        printf("Menu\n 1-add\n 2-delete\n 3-save\n 4-load\n 5-print\n 6-gpa\n 7-exit \n");
         printf("---------------\n");
         scanf("%d", &l);
         printf("---------------\n");
